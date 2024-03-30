@@ -121,20 +121,20 @@ CMD ["npm", "start"]
 ```yml
 version: '3'
 services:
-	nginx:
-		image: nginx:latest
-		ports:
-			- "8080:80"
-		volumes:
-			- ./nginx.conf:/etc/nginx/nginx.conf
-		depends_on:
-			- nodejs
-	nodejs:
-		build: .
-		ports:
-			- "3000:3000"
-		volumes:
-			- .:/app
+    nginx:
+        image: nginx:latest
+        ports:
+            - "8080:80"
+        volumes:
+            - ./nginx.conf:/etc/nginx/nginx.conf
+        depends_on:
+            - nodejs
+    nodejs:
+        build: .
+        ports:
+            - "3000:3000"
+        volumes:
+            - .:/app
 ```
 
 ### Step 4
