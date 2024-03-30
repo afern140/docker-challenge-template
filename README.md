@@ -82,6 +82,9 @@ EXPOSE 8080
 
 - Open your browser and navigate to http://localhost:8080 to view the website
 
+- The result should be something like this  
+![result](img/challenge1.png)
+
 ### Step 6
 
 - Push your changes to your GitHub repository fork
@@ -165,6 +168,9 @@ http {
 - Build the Docker image using the command `docker-compose up --build`
 
 - Open your browser and navigate to http://localhost:8080/api/books
+
+- The result should be something like this  
+![result](img/challenge2.png)
 
 ### Step 6
 
