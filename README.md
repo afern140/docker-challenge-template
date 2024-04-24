@@ -175,3 +175,126 @@ http {
 ### Step 6
 
 - Push your changes to your GitHub repository fork
+
+## Chapter 3 - Setting up a MariaDB Database
+
+### Step 0.1
+
+- Download `challenge3.zip`
+
+- Download MariaDB from here: https://mariadb.org/download/  
+(Make sure to click **Download for Windows**)
+
+- Install MariDB
+
+### Step 0.2
+
+- Create a new user using the command `CREATE USER 'docker'@'localhost' IDENTIFIED BY 'dockerpassword';`
+
+### Step 0.3
+
+- Create a new database using the command `CREATE OR REPLACE DATABASE dockerchallenge;`
+
+- Run the provided `init.sql` file to create and populate tables
+
+### Step 1
+
+- Create a new file called `.env` in the `challenge3` folder
+
+- Add the following fields to the file
+```sh
+DB_ROOT_PASSWORD=password
+DB_DATABASE=dockerchallenge
+DB_USERNAME=docker
+DB_PASSWORD=dockerpassword
+DB_HOST=db
+
+MYSQL_ROOT_PASSWORD=password
+MYSQL_DATABASE=dockerchallenge
+MYSQL_USER=docker
+MYSQL_PASSWORD=dockerpassword
+MYSQL_HOST=db
+```
+
+- NOTE - If you used a different database name or a different name for any other fields, don't just copy paste this and actually update it with the names you used
+
+### Step 2
+
+- Create a new file called `docker-compose.yml` in the `challenge3` folder
+
+- Add the following code to the file
+```yml
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8080:80"
+    depends_on:
+      - node-service
+  node-service:
+    build: ./docker/api
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${DB_DATABASE}
+    depends_on:
+      - db
+  db:
+    image: mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - ./docker/db/init/init.sql:/docker-entrypoint-initdb.d/init.sql
+volumes:
+  db-data:
+```
+
+- This will pass all the environment variables to the api, and create a server at http://localhost:8080
+
+### Step 3
+
+- Open CMD and `cd` to the `challenge3` folder
+
+- Build the server using the command `docker-compose up --build`
+
+- Navigate to http://localhost:8080/api/books
+
+- The result should be something like this  
+![result](img/challenge3.png)
+
+- Navigate to http://localhost:8080/api/books/1
+
+- You should see an individual book
+
+### Step 4
+
+- Push your changes to your GitHub repository fork
+
+## Chapter 4 - Scaling the Application
+
+### Step 1
+
+- Duplicate the `challenge3` folder, and name it `challenge4`
+
+### Step 2
+
+- Open CMD and `cd` to the `challenge4` folder
+
+- Build the server using the command `docker-compose up --build --scale node-service=3`
+
+### Step 3
+
+- Open a new CMD window and `cd` to the `challenge4` folder
+
+- Run the command `docker-compose ps`
+
+- The result should be similar to this  
+![result](img/challenge4.png)
