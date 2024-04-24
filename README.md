@@ -274,9 +274,7 @@ volumes:
 
 - You should see an individual book
 
-### Step 4
 
-- Push your changes to your GitHub repository fork
 
 ## Chapter 4 - Scaling the Application
 
@@ -298,3 +296,7 @@ volumes:
 
 - The result should be similar to this  
 ![result](img/challenge4.png)
+
+### Step 4
+
+- Push your changes to your GitHub repository fork
